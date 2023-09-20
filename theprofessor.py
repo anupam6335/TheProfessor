@@ -1,10 +1,22 @@
 from tkinter import *
 from tkinter import filedialog
+from pytube import YouTube
+from moviepy.editor import *
+
+def download():
+    video_path = url_entry.get()
+    file_path = path_label.cget("text")
+    mp4 = YouTube(video_path).streams.get_highest_resolution().download()
+    video_clip = VideoFileClip(mp4)
+    video_clip.close()
+
+
 
 
 def get_path():
     path = filedialog.askdirectory()
     path_label.config(text=path)
+
 
 root = Tk()
 root.title('The Professor - The Video Downloader 😎')
@@ -19,8 +31,15 @@ app_label = Label(root, text='The Professor 😎',fg='#26577C',font=('Cascadia C
 canvas.create_window(200, 20, window=app_label)
 
 #entry to accept video URL
-url_label = Label(root, text="Enter Video URL 👇🏻",  font='Helvetica 15 bold').place(x = 185, y = 70) 
-url_entry = Entry(root, width=65).place(x = 70, y = 105) 
+# Create the URL label
+url_label = Label(root, text="Enter Video URL 👇🏻", font='Helvetica 15 bold')
+
+# Create the URL entry
+url_entry = Entry(root, width=65)
+
+# Place the URL label and entry
+url_label.place(x=185, y=70)
+url_entry.place(x=70, y=105)
 
 canvas.create_window(200, 80, window=url_label)
 canvas.create_window(200, 100, window=url_entry)
@@ -43,7 +62,7 @@ canvas.create_window(200, 170, window=path_button)
 
 
 #download button
-download_button = Button(root, text='Download Video', width=20).place(x = 180, y = 250) 
+download_button = Button(root, text='Download Video', width=20, command=download).place(x = 180, y = 250) 
 canvas.create_window(200, 250, window=download_button)
 
 
